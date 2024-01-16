@@ -9,8 +9,8 @@ package badge
 // ////////////////////////////////////////////////////////////////////////////////// //
 
 import (
+	"embed"
 	"fmt"
-	"io/ioutil"
 	"math"
 	"strconv"
 	"strings"
@@ -21,6 +21,10 @@ import (
 )
 
 // ////////////////////////////////////////////////////////////////////////////////// //
+var (
+	//go:embed fonts/*.ttf
+	fontsFs embed.FS
+)
 
 const (
 	COLOR_BLUE        = "#007ec6"
@@ -75,10 +79,10 @@ type Generator struct {
 
 // NewGenerator creates new badge generator with given font
 func NewGenerator(fontFile string, fontSize int) (*Generator, error) {
-	fontData, err := ioutil.ReadFile(fontFile)
+	fontData, err := fontsFs.ReadFile(fmt.Sprintf("fonts/%s", fontFile))
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("could not open font file %w", err)
 	}
 
 	fontTTF, err := truetype.Parse(fontData)
