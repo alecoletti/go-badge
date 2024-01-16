@@ -1,4 +1,4 @@
-module github.com/essentialkaos/go-badge
+module github.com/alecoletti/go-badge
 
 go 1.18
 
